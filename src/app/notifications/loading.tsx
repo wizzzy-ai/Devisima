@@ -1,0 +1,3 @@
+export default function NotificationsLoading() {
+  return <main className="mx-auto min-h-screen max-w-4xl space-y-5 px-4 py-24 sm:px-6"><div className="h-8 w-48 animate-pulse rounded bg-muted" /><div className="h-4 w-72 animate-pulse rounded bg-muted" /><div className="space-y-3">{[0, 1, 2, 3].map((item) => <div key={item} className="flex gap-4 rounded-2xl border border-border bg-card p-5"><div className="h-10 w-10 animate-pulse rounded-full bg-muted" /><div className="flex-1 space-y-3"><div className="h-4 w-1/3 animate-pulse rounded bg-muted" /><div className="h-3 w-full animate-pulse rounded bg-muted" /></div></div>)}</div></main>;
+}
