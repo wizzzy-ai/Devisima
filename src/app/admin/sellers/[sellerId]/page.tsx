@@ -72,7 +72,7 @@ export default async function AdminSellerManagePage({
         select: {
           id: true,
           action: true,
-          entityType: true,
+          entityType: true as string,
           entityId: true,
           metadata: true,
           createdAt: true,
@@ -114,7 +114,7 @@ export default async function AdminSellerManagePage({
           id: seller.id,
           name: seller.name,
           email: seller.email,
-          emailVerified: seller.emailVerified,
+          emailVerified: seller.emailVerified as boolean | null,
           role: seller.role,
           status: seller.status,
           sellerSuspendedAt: seller.sellerSuspendedAt,

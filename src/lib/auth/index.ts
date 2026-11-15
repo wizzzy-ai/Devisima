@@ -37,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   })],
   callbacks: {
-    async redirect({ url, baseUrl, token }) {
+    async redirect({ url, baseUrl }) {
       const baseOrigin = new URL(baseUrl).origin;
       const dashboardUrl = new URL("/dashboard", baseUrl).toString();
       const forbiddenUrl = new URL("/forbidden", baseUrl).toString();

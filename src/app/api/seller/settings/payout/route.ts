@@ -45,6 +45,8 @@ export async function POST(request: Request) {
           bankName: parsed.data.bankName,
           bankCode: parsed.data.bankCode,
           isVerified: false,
+          accountNumberEncrypted: "",
+          recipientCode: "",
         },
       });
     }

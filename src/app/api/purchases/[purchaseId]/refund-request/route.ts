@@ -8,7 +8,7 @@ import { createNotification } from "@/lib/notifications";
 const refundRequestSchema = z.object({
   reason: z.string().min(10, "Please provide a detailed reason (at least 10 characters)"),
   explanation: z.string().optional(),
-  evidence: z.record(z.any()).optional(),
+  evidence: z.record(z.string(), z.any()).optional(),
 });
 
 export async function POST(
@@ -20,7 +20,7 @@ export async function POST(
   const payload = refundRequestSchema.safeParse(await request.json().catch(() => null));
 
   if (!payload.success) {
-    return NextResponse.json({ message: payload.error.errors[0].message }, { status: 400 });
+    return NextResponse.json({ message: payload.error.issues[0]?.message ?? "Invalid refund request data" }, { status: 400 });
   }
 
   if (!purchaseId || !/^c[a-z0-9]{20,30}$/i.test(purchaseId)) {

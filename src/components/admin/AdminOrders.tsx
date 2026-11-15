@@ -19,10 +19,16 @@ type Order = {
   };
   items: Array<{
     id: string;
+    price: number;
     product: {
       id: string;
       title: string;
       slug: string;
+      seller: {
+        id: string;
+        name: string | null;
+        email: string;
+      };
     };
   }>;
   payments: Array<{
@@ -376,10 +382,10 @@ export function AdminOrders() {
                     <div key={item.id} className="p-4 flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <p className="font-medium text-foreground">{item.product.title}</p>
-                        <p className="text-xs text-muted-foreground">Seller: {item.product.seller.name || item.product.seller.email}</p>
+                        <p className="text-xs text-muted-foreground">Seller: {item.product.seller?.name || item.product.seller?.email || "Unknown"}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-foreground">{formatCurrency(item.price, selectedOrder.currency)}</p>
+                        <p className="font-medium text-foreground">{formatCurrency(item.price || 0, selectedOrder.currency)}</p>
                       </div>
                     </div>
                   ))}

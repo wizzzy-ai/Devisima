@@ -8,7 +8,7 @@ import { writeFinancialAudit } from "@/lib/payouts/audit";
 const refundDecisionSchema = z.object({
   decision: z.enum(["APPROVED", "REJECTED", "MORE_INFO_REQUIRED"]),
   notes: z.string().min(5, "Please provide a detailed explanation for your decision"),
-  evidence: z.record(z.any()).optional(),
+  evidence: z.record(z.string(), z.any()).optional(),
 });
 
 export async function GET(
@@ -119,7 +119,7 @@ export async function POST(
   const payload = refundDecisionSchema.safeParse(await request.json().catch(() => null));
 
   if (!payload.success) {
-    return NextResponse.json({ message: payload.error.errors[0].message }, { status: 400 });
+    return NextResponse.json({ message: payload.error.issues[0]?.message ?? "Invalid refund decision data" }, { status: 400 });
   }
 
   const refund = await db.refund.findUnique({
@@ -161,9 +161,9 @@ export async function POST(
     const updated = await tx.refund.update({
       where: { id: refundId },
       data: {
-        status: newStatus,
+        status: newStatus as any,
         adminDecision: payload.data.decision,
-        adminEvidence: payload.data.evidence,
+        adminEvidence: payload.data.evidence as any,
         reviewedById: admin.id,
         reviewedAt: new Date(),
       },
@@ -174,9 +174,9 @@ export async function POST(
       data: {
         refundId: refund.id,
         actorId: admin.id,
-        action: payload.data.decision === "MORE_INFO_REQUIRED" ? "MORE_INFO_REQUESTED" : payload.data.decision,
+        action: payload.data.decision === "MORE_INFO_REQUIRED" ? "MORE_INFO_REQUESTED" : payload.data.decision as any,
         notes: payload.data.notes,
-        evidence: payload.data.evidence,
+        evidence: payload.data.evidence as any,
         previousStatus,
         newStatus,
       },
@@ -184,7 +184,7 @@ export async function POST(
 
     await writeFinancialAudit(tx, {
       actorId: admin.id,
-      action: payload.data.decision === "APPROVED" ? "REFUND_APPROVED" : payload.data.decision === "REJECTED" ? "REFUND_REJECTED" : "REFUND_MORE_INFO",
+      action: (payload.data.decision === "APPROVED" ? "REFUND_APPROVED" : payload.data.decision === "REJECTED" ? "REFUND_REJECTED" : "REFUND_MORE_INFO") as any,
       entityType: "Refund",
       entityId: refund.id,
       amount: refund.amount,
