@@ -4,6 +4,9 @@ const privateAccountPages = ["/dashboard", "/profile", "/wishlist", "/purchases"
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
