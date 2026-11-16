@@ -40,12 +40,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async redirect({ url, baseUrl }) {
       const baseOrigin = new URL(baseUrl).origin;
       const dashboardUrl = new URL("/dashboard", baseUrl).toString();
-      const forbiddenUrl = new URL("/forbidden", baseUrl).toString();
-
-      // If user is suspended, redirect to forbidden page
-      if (token && token.status === "SUSPENDED") {
-        return forbiddenUrl;
-      }
 
       try {
         const destination = new URL(url, baseUrl);
