@@ -32,9 +32,11 @@ Configure values independently for local development, staging, and production. N
 | AUTH | `AUTH_SECRET` | Required, unique, high-entropy secret. Generate with a cryptographically secure random generator. |
 | AUTH | `AUTH_TRUST_HOST` | Set `true` only when requests arrive through a trusted proxy/platform ingress, such as Vercel. |
 | DATABASE | `DATABASE_URL` | Required PostgreSQL connection string for the target environment. Restrict network access and use a least-privilege database account. |
-| EMAIL | `EMAIL_PROVIDER` | Set to `resend` to send production email. |
-| EMAIL | `EMAIL_API_KEY` | Required server-side Resend credential; never prefix with `NEXT_PUBLIC_`. |
-| EMAIL | `EMAIL_FROM` | Required sender using a domain verified in Resend. Verification is an operator task. |
+| EMAIL | `EMAIL_PROVIDER` | Set to `resend` or `google-smtp` to select the server-side email provider. |
+| EMAIL | `EMAIL_API_KEY` | Required server-side Resend credential when `EMAIL_PROVIDER=resend`; never prefix with `NEXT_PUBLIC_`. |
+| EMAIL | `EMAIL_SMTP_USER` | Required Gmail account when `EMAIL_PROVIDER=google-smtp`. |
+| EMAIL | `EMAIL_SMTP_PASSWORD` | Required Google App Password when `EMAIL_PROVIDER=google-smtp`; store only in server-side environment settings. |
+| EMAIL | `EMAIL_FROM` | Sender email address. For Google SMTP, use the Gmail account or an authorized sender alias. |
 | EMAIL | `EMAIL_OTP_MAX_ATTEMPTS` | Optional; defaults to 5, accepted range is 1–10. |
 | PAYMENTS | `PAYSTACK_SECRET_KEY` | Required server-side key for payment initialization, verification, and webhook signature checks. Keep test keys in staging; do not switch to live keys before approval. |
 | PAYMENTS | `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | Paystack's public key used in browser integration; use the matching test/live environment. This is intentionally public, unlike the secret key. |
@@ -85,8 +87,9 @@ Example local-only setup is in `.env.example`. Never copy its localhost values i
 
 ## Email
 
-- Configure `EMAIL_PROVIDER=resend`, `EMAIL_API_KEY`, and `EMAIL_FROM` only in server-side environment settings.
-- Verify the sender domain and DNS records in Resend before testing account verification, password reset, seller decision, payment, payout, and notification emails.
+- Configure either `EMAIL_PROVIDER=resend` with `EMAIL_API_KEY`, or `EMAIL_PROVIDER=google-smtp` with `EMAIL_SMTP_USER` and `EMAIL_SMTP_PASSWORD`. Keep credentials only in server-side environment settings.
+- Use a Google App Password for SMTP authentication and set `EMAIL_FROM` to that account or a Gmail-authorized alias.
+- Send a real test email and verify its links on the production domain before treating email as production-ready. Gmail sending quotas and account policies still apply.
 - Do not claim email is production-ready until a real message has been delivered and link URLs have been checked on the production domain.
 
 ## Built-in support assistant

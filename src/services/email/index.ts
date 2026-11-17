@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { createTransport } from "nodemailer";
 import { getAppUrl } from "@/lib/app-url";
 
 type EmailMessage = { to: string; subject: string; text: string; html: string };
@@ -41,12 +42,45 @@ const resendProvider: EmailProvider = {
   },
 };
 
+const googleSmtpProvider: EmailProvider = {
+  async send(message) {
+    const user = process.env.EMAIL_SMTP_USER?.trim();
+    const password = process.env.EMAIL_SMTP_PASSWORD?.trim();
+    if (!user || !password) {
+      throw new Error("EMAIL_SMTP_USER and EMAIL_SMTP_PASSWORD must be configured for Google SMTP.");
+    }
+
+    const from = process.env.EMAIL_FROM?.trim() || user;
+    const transporter = createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user, pass: password },
+    });
+
+    try {
+      await transporter.sendMail({ from, ...message });
+    } catch (error) {
+      console.error("Google SMTP email error", error instanceof Error ? error.name : "Unknown error");
+      throw new Error("Failed to send email via Google SMTP.");
+    } finally {
+      transporter.close();
+    }
+  },
+};
+
 export async function sendEmail(message: EmailMessage) {
-  if (process.env.EMAIL_PROVIDER === "resend" && process.env.EMAIL_API_KEY && process.env.EMAIL_FROM) {
+  if (process.env.EMAIL_PROVIDER === "resend") {
     await resendProvider.send(message);
     return;
   }
-  if (process.env.NODE_ENV === "production") throw new Error("Email delivery is not configured.");
+  if (process.env.EMAIL_PROVIDER === "google-smtp") {
+    await googleSmtpProvider.send(message);
+    return;
+  }
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(`Email delivery provider "${process.env.EMAIL_PROVIDER || "unset"}" is not configured.`);
+  }
   console.info(`[development email] ${message.subject}\nTo: ${message.to}\n${message.text}`);
 }
 
