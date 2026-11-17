@@ -28,7 +28,7 @@ export function Hero() {
       <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-[#d6ec83]/30 blur-3xl" />
 
       <div className="relative z-10 mx-auto grid min-h-[690px] max-w-7xl items-center gap-12 px-5 pb-16 pt-28 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:pb-24 md:pt-32">
-        <div className="max-w-[640px]">
+        <div className="w-full min-w-0 max-w-[640px]">
           <div className="hero-intro hero-intro-1 mb-7 inline-flex items-center gap-2 rounded-full border border-[#d7dfc0] bg-white/75 px-4 py-2 text-sm font-semibold text-[#3c5c42] shadow-sm backdrop-blur">
             <Sparkles className="h-4 w-4 text-[#8aa82b]" />
             A better place to find your next tool
@@ -40,7 +40,7 @@ export function Hero() {
             Find ready-made software, thoughtful templates, and digital tools that help you get from idea to done.
           </p>
 
-          <form action="/marketplace" className="hero-intro hero-intro-4 mt-9 flex max-w-[560px] items-center gap-2 rounded-2xl border border-[#e2e6d5] bg-white p-2 shadow-[0_14px_40px_rgba(25,55,42,.10)] focus-within:border-[#74b4a4]">
+          <form action="/marketplace" className="hero-intro hero-intro-4 mt-9 flex w-full min-w-0 max-w-[560px] items-center gap-2 rounded-2xl border border-[#e2e6d5] bg-white p-2 shadow-[0_14px_40px_rgba(25,55,42,.10)] focus-within:border-[#74b4a4]">
             <Search className="ml-3 h-5 w-5 shrink-0 text-[#829087]" />
             <input
               type="search"
@@ -49,7 +49,7 @@ export function Hero() {
               aria-label="Search the marketplace"
               className="h-12 min-w-0 flex-1 bg-transparent text-sm text-[#173d36] outline-none placeholder:text-[#929c92] sm:text-base"
             />
-            <button type="submit" className="inline-flex h-12 items-center gap-3 rounded-[4px] border-2 border-[#0F4C5C] bg-white px-4 text-base font-bold text-[#0F4C5C] shadow-[4px_4px_0_#0F4C5C] transition-all hover:-translate-y-0.5 hover:bg-[#f7f8f6] sm:px-5">
+            <button type="submit" className="inline-flex h-12 shrink-0 items-center gap-2 rounded-[4px] border-2 border-[#0F4C5C] bg-white px-3 text-sm font-bold text-[#0F4C5C] shadow-[4px_4px_0_#0F4C5C] transition-all hover:-translate-y-0.5 hover:bg-[#f7f8f6] sm:gap-3 sm:px-5 sm:text-base">
               Search <ArrowRight className="h-4 w-4" />
             </button>
           </form>
