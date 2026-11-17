@@ -119,13 +119,41 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-color: #0F4C5C transparent;
+    scrollbar-width: thin;
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
   }
   html {
     @apply font-sans;
+    overflow-x: clip;
   }
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-color: #0F4C5C;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #35D0BA;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .not-found-sky {

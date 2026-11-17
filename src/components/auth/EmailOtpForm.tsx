@@ -21,10 +21,6 @@ export function EmailOtpForm({ email: initialEmail, callbackUrl = "", initialSec
   const safeCallback = getSafeCallbackUrl(callbackUrl || new URLSearchParams(window.location.search).get("callbackUrl"), window.location.origin);
 
   useEffect(() => {
-    inputs.current[0]?.focus();
-  }, []);
-
-  useEffect(() => {
     if (secondsLeft <= 0) return;
     const timer = window.setInterval(() => setSecondsLeft((seconds) => Math.max(0, seconds - 1)), 1000);
     return () => window.clearInterval(timer);
@@ -117,11 +113,11 @@ export function EmailOtpForm({ email: initialEmail, callbackUrl = "", initialSec
 
   return (
     <div>
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-[#0F4C5C]">Devisima account</p>
-        <h2 className="text-3xl font-semibold tracking-tight">Verify your email</h2>
-        <p className="mt-2 text-sm leading-6 text-[#697579]">
-          {email ? <>We sent a 6-digit verification code to <span className="font-semibold text-[#26343a]">{email}</span>.</> : "Enter your email and the 6-digit verification code we sent you."}
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Verify your email</h2>
+        <p className="mt-2 break-words text-sm leading-6 text-[#697579]">
+          {email ? <>We sent a 6-digit verification code to <span className="break-all font-semibold text-[#26343a] sm:break-normal">{email}</span>.</> : "Enter your email and the 6-digit verification code we sent you."}
           {" "}The code expires in 10 minutes.
         </p>
       </div>
@@ -129,16 +125,16 @@ export function EmailOtpForm({ email: initialEmail, callbackUrl = "", initialSec
       {!email && <label className="mb-5 block text-sm font-semibold text-[#26343a]" htmlFor="verification-email">Email address<input className="mt-2 h-12 w-full rounded-xl border border-[#d9dedb] bg-white px-4 text-sm font-normal text-[#101820] outline-none transition focus:border-[#0F4C5C] focus:ring-4 focus:ring-[#0F4C5C]/10" id="verification-email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required/></label>}
 
       <form onSubmit={submit} className="space-y-6">
-        <fieldset disabled={pending || resending}>
+        <fieldset className="min-w-0" disabled={pending || resending}>
           <legend className="sr-only">6-digit verification code</legend>
-          <div className="flex justify-center gap-2 sm:gap-3" dir="ltr">
+          <div className="grid grid-cols-6 gap-2 sm:gap-3" dir="ltr">
             {digits.map((digit, index) => (
               <input
                 key={index}
                 ref={(element) => { inputs.current[index] = element; }}
                 aria-label={`Digit ${index + 1} of ${otpLength}`}
                 autoComplete={index === 0 ? "one-time-code" : "off"}
-                className="aspect-square min-w-0 max-w-14 flex-1 rounded-xl border border-[#d9dedb] bg-white text-center text-xl font-semibold text-[#101820] outline-none transition focus:border-[#0F4C5C] focus:ring-4 focus:ring-[#0F4C5C]/10 disabled:opacity-70"
+                className="mx-auto aspect-square w-full min-w-0 max-w-14 rounded-xl border border-[#d9dedb] bg-white text-center text-lg font-semibold text-[#101820] outline-none transition focus:border-[#0F4C5C] focus:ring-4 focus:ring-[#0F4C5C]/10 disabled:opacity-70 sm:text-xl"
                 inputMode="numeric"
                 maxLength={1}
                 pattern="[0-9]*"

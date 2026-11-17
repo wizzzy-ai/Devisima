@@ -117,10 +117,10 @@ export function CookieConsent() {
           <button
             type="button"
             onClick={() => acceptPreferences({ preferences: true, analytics: true, marketing: true })}
-            className="group relative inline-flex rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="group relative inline-flex w-full rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:w-auto"
           >
             <span aria-hidden="true" className="absolute left-1 top-1 h-full w-full rounded bg-[#35D0BA]" />
-            <span className="relative inline-flex h-10 items-center justify-center rounded border-2 border-white bg-[#0F4C5C] px-4 text-sm font-bold text-white transition-all duration-200 group-hover:bg-[#35D0BA] group-hover:text-[#0F4C5C]">
+            <span className="relative inline-flex h-10 w-full items-center justify-center rounded border-2 border-white bg-[#0F4C5C] px-4 text-sm font-bold text-white transition-all duration-200 group-hover:bg-[#35D0BA] group-hover:text-[#0F4C5C] sm:w-auto">
               Accept all
             </span>
           </button>
