@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Search, Sparkles, Star } from "lucide-react";
+import { ArrowRight, Search, Star } from "lucide-react";
 import Ferrofluid from "./Ferrofluid";
 import Lanyard from "@/components/Lanyard";
 
@@ -29,10 +29,6 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto grid min-h-[690px] max-w-7xl items-center gap-12 px-5 pb-16 pt-28 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:pb-24 md:pt-32">
         <div className="w-full min-w-0 max-w-[640px]">
-          <div className="hero-intro hero-intro-1 mb-7 inline-flex items-center gap-2 rounded-full border border-[#d7dfc0] bg-white/75 px-4 py-2 text-sm font-semibold text-[#3c5c42] shadow-sm backdrop-blur">
-            <Sparkles className="h-4 w-4 text-[#8aa82b]" />
-            A better place to find your next tool
-          </div>
           <h1 className="hero-intro hero-intro-2 text-[3.2rem] font-semibold leading-[.98] tracking-[-.065em] sm:text-6xl lg:text-[4.65rem]">
             Good ideas deserve <span className="text-[#277f70]">great software.</span>
           </h1>
