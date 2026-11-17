@@ -32,8 +32,7 @@ Configure values independently for local development, staging, and production. N
 | AUTH | `AUTH_SECRET` | Required, unique, high-entropy secret. Generate with a cryptographically secure random generator. |
 | AUTH | `AUTH_TRUST_HOST` | Set `true` only when requests arrive through a trusted proxy/platform ingress, such as Vercel. |
 | DATABASE | `DATABASE_URL` | Required PostgreSQL connection string for the target environment. Restrict network access and use a least-privilege database account. |
-| EMAIL | `EMAIL_PROVIDER` | Set to `resend` or `google-smtp` to select the server-side email provider. |
-| EMAIL | `EMAIL_API_KEY` | Required server-side Resend credential when `EMAIL_PROVIDER=resend`; never prefix with `NEXT_PUBLIC_`. |
+| EMAIL | `EMAIL_PROVIDER` | Set to `google-smtp` to send email through Gmail SMTP. |
 | EMAIL | `EMAIL_SMTP_USER` | Required Gmail account when `EMAIL_PROVIDER=google-smtp`. |
 | EMAIL | `EMAIL_SMTP_PASSWORD` | Required Google App Password when `EMAIL_PROVIDER=google-smtp`; store only in server-side environment settings. |
 | EMAIL | `EMAIL_FROM` | Sender email address. For Google SMTP, use the Gmail account or an authorized sender alias. |
@@ -87,7 +86,7 @@ Example local-only setup is in `.env.example`. Never copy its localhost values i
 
 ## Email
 
-- Configure either `EMAIL_PROVIDER=resend` with `EMAIL_API_KEY`, or `EMAIL_PROVIDER=google-smtp` with `EMAIL_SMTP_USER` and `EMAIL_SMTP_PASSWORD`. Keep credentials only in server-side environment settings.
+- Configure `EMAIL_PROVIDER=google-smtp` with `EMAIL_SMTP_USER` and `EMAIL_SMTP_PASSWORD`. Keep credentials only in server-side environment settings.
 - Use a Google App Password for SMTP authentication and set `EMAIL_FROM` to that account or a Gmail-authorized alias.
 - Send a real test email and verify its links on the production domain before treating email as production-ready. Gmail sending quotas and account policies still apply.
 - Do not claim email is production-ready until a real message has been delivered and link URLs have been checked on the production domain.
@@ -121,7 +120,7 @@ Example local-only setup is in `.env.example`. Never copy its localhost values i
 
 ## Staging and release sequence
 
-1. Create a separate staging project, PostgreSQL database, Auth secret, Resend/test-email configuration, Paystack test keys, and an isolated private bucket with staging-only credentials and CORS.
+1. Create a separate staging project, PostgreSQL database, Auth secret, Google SMTP/test-email configuration, Paystack test keys, and an isolated private bucket with staging-only credentials and CORS.
 2. Never connect staging to production financial data or storage.
 3. Apply all pending migrations to staging with `npm run db:deploy`; verify schema status and clean-install migrations on a disposable database.
 4. Configure the production-like environment and validate domain callbacks, email delivery, access controls, private uploads/downloads, and test payment lifecycle.
@@ -158,7 +157,7 @@ Example local-only setup is in `.env.example`. Never copy its localhost values i
 - [ ] USER, SELLER, ADMIN authorization and suspended-account denial tested
 
 ### Email
-- [ ] Resend key configured only server-side
+- [ ] Google SMTP credentials configured only server-side
 - [ ] Sender domain verified and `EMAIL_FROM` confirmed
 - [ ] Verification, reset, seller, payment, payout, and notification emails tested
 

@@ -1,4 +1,3 @@
-import { Resend } from "resend";
 import { createTransport } from "nodemailer";
 import { getAppUrl } from "@/lib/app-url";
 
@@ -13,33 +12,6 @@ type BrandedEmailOptions = {
   contentHtml: string;
   action?: { label: string; url: string };
   preferenceUrl?: string;
-};
-
-const resendProvider: EmailProvider = {
-  async send(message) {
-    if (!process.env.EMAIL_API_KEY) {
-      throw new Error("EMAIL_API_KEY is not configured. Please set it in your environment variables.");
-    }
-    const from = process.env.EMAIL_FROM;
-    if (!from) {
-      throw new Error("EMAIL_FROM is not configured. Please set it in your environment variables.");
-    }
-
-    const resend = new Resend(process.env.EMAIL_API_KEY);
-
-    try {
-      await resend.emails.send({
-        from,
-        to: message.to,
-        subject: message.subject,
-        text: message.text,
-        html: message.html,
-      });
-    } catch (error) {
-      console.error("Resend email error:", error);
-      throw new Error(`Failed to send email via Resend: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  },
 };
 
 const googleSmtpProvider: EmailProvider = {
@@ -70,10 +42,6 @@ const googleSmtpProvider: EmailProvider = {
 };
 
 export async function sendEmail(message: EmailMessage) {
-  if (process.env.EMAIL_PROVIDER === "resend") {
-    await resendProvider.send(message);
-    return;
-  }
   if (process.env.EMAIL_PROVIDER === "google-smtp") {
     await googleSmtpProvider.send(message);
     return;

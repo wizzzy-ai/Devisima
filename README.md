@@ -14,7 +14,7 @@ npm run db:migrate
 npm run dev
 ```
 
-For local email testing, leave the email provider unset. Verification codes and password reset links are written to the development server log and are never sent to an external provider. OTP codes are not logged in production. To send real email with Resend, configure `EMAIL_PROVIDER=resend`, `EMAIL_API_KEY`, and `EMAIL_FROM`. To send through Google SMTP, configure `EMAIL_PROVIDER=google-smtp`, `EMAIL_SMTP_USER`, `EMAIL_SMTP_PASSWORD` (a Google App Password), and `EMAIL_FROM` as the Gmail address or an authorized sender alias. Keep provider credentials server-side. Set `AUTH_URL` to the public origin and `AUTH_TRUST_HOST=true` only when the deployment host/proxy is trusted.
+For local email testing, leave the email provider unset. Verification codes and password reset links are written to the development server log and are never sent to an external provider. OTP codes are not logged in production. To send email, configure Google SMTP with `EMAIL_PROVIDER=google-smtp`, `EMAIL_SMTP_USER`, `EMAIL_SMTP_PASSWORD` (a Google App Password), and `EMAIL_FROM` as the Gmail address or an authorized sender alias. Keep provider credentials server-side. Set `AUTH_URL` to the public origin and `AUTH_TRUST_HOST=true` only when the deployment host/proxy is trusted.
 
 Registration requires accepting the Terms & Conditions and a password of at least 8 characters with uppercase, lowercase, and numeric characters. New accounts receive a six-digit verification code that expires after 10 minutes. Codes are stored as keyed hashes, allow five attempts by default, and can be resent after a 60-second cooldown. Set `EMAIL_OTP_MAX_ATTEMPTS` to a value from 1 to 10 to change the attempt limit. New accounts must verify their email before signing in.
 
@@ -81,7 +81,7 @@ The development-only filesystem adapter uses a directory outside `public`; produ
 
 ## Notifications
 
-Apply the `20261007160000_notifications_system` migration before deploying the notification center. Authenticated users can view their paginated notifications at `/notifications` and manage email preferences at `/settings/notifications`. In-app notification queries and read updates are scoped to the current server-side session. Important event emails use the existing Resend adapter and respect each account's email preferences; email delivery is independent from in-app notification storage.
+Apply the `20261007160000_notifications_system` migration before deploying the notification center. Authenticated users can view their paginated notifications at `/notifications` and manage email preferences at `/settings/notifications`. In-app notification queries and read updates are scoped to the current server-side session. Important event emails use the Google SMTP provider and respect each account's email preferences; email delivery is independent from in-app notification storage.
 
 Payment, purchase, seller application, product moderation, sale, and payout events currently create notifications from their application event handlers. Review, refund, coupon-creation, and report notifications should be connected when those write/review workflows are implemented; the system does not generate placeholder notifications for workflows that have not occurred.
 
