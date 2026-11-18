@@ -268,45 +268,8 @@ export async function getFeaturedProducts(limit = 6) {
   );
 }
 
-const SOMPAY_POPULAR_FALLBACK = [
-  {
-    id: "sompay-solution-id",
-    title: "SOMPAY",
-    slug: "sompay",
-    shortDescription:
-      "SomPay is a modern digital payment platform, focused on simplifying transactions through a beautiful, user-friendly interface.",
-    images: ["/products/sompay-preview.svg"],
-    demoUrl: "https://sompay.vercel.app",
-    price: 55000,
-    compareAtPrice: 60000,
-    productType: ProductType.COMPLETE_APPLICATION,
-    licenseType: LicenseType.COMMERCIAL,
-    technologies: ["JavaScript", "HTML5"],
-    features: [
-      "Modern and responsive user interface",
-      "Intuitive payment dashboard",
-    ],
-    version: "1.0.0",
-    averageRating: 0,
-    reviewCount: 0,
-    totalSales: 0,
-    isFeatured: false,
-    likeCount: 0,
-    category: {
-      id: "business-systems",
-      name: "Business Systems",
-      slug: "business-systems",
-    },
-    seller: {
-      id: "chisom-work",
-      name: "chisom work",
-      image: null,
-    },
-  },
-];
-
 export async function getPopularSolutions(limit = 6) {
-  return withDatabaseFallback(SOMPAY_POPULAR_FALLBACK, async () => {
+  return withDatabaseFallback([], async () => {
     const products = await db.product.findMany({
       where: {
         status: ProductStatus.PUBLISHED,
@@ -339,7 +302,7 @@ export async function getPopularSolutions(limit = 6) {
       },
     });
 
-    return products.length > 0 ? products : SOMPAY_POPULAR_FALLBACK;
+    return products;
   });
 }
 
