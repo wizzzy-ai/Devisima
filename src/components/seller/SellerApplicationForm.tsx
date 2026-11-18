@@ -4,10 +4,8 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { sellerApplicationSchema } from "@/lib/validation/auth";
 import { LoaderCircle } from "lucide-react";
-import SquishSwitch from "@/components/ui/SquishSwitch";
 
 const fieldClass = "mt-2 w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10";
-const switchProps = { trackColor: "#dce5e2", trackOnColor: "#174c43", thumbColor: "#ffffff", thumbOnColor: "#ffffff", width: 76, height: 38, radius: 19, speed: 50, stretch: 36, hoverScale: 1.035, colorDuration: 320 } as const;
 
 const productTypeOptions = [
   "Flutter apps",
@@ -115,11 +113,17 @@ export function SellerApplicationForm({ initialApplication, resubmission = false
         <legend className="text-sm font-semibold text-foreground">What do you plan to sell? <span className="font-normal text-muted-foreground">(Select all that apply)</span></legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {productTypeOptions.map((option) => (
-            <div key={option} className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
+            <label key={option} className="flex cursor-pointer items-center justify-between gap-3 text-sm text-muted-foreground">
               <span>{option}</span>
-              <input type="checkbox" name="productTypes" value={option} checked={selectedProductTypes.includes(option)} readOnly tabIndex={-1} aria-hidden="true" className="sr-only" />
-              <SquishSwitch {...switchProps} checked={selectedProductTypes.includes(option)} ariaLabel={`${option} product type`} onChange={(checked) => setSelectedProductTypes((current) => checked ? [...current, option] : current.filter((value) => value !== option))} />
-            </div>
+              <input
+                type="checkbox"
+                name="productTypes"
+                value={option}
+                checked={selectedProductTypes.includes(option)}
+                onChange={(event) => setSelectedProductTypes((current) => event.target.checked ? [...current, option] : current.filter((value) => value !== option))}
+                className="h-5 w-5 shrink-0 cursor-pointer accent-primary"
+              />
+            </label>
           ))}
         </div>
       </fieldset>
@@ -128,11 +132,17 @@ export function SellerApplicationForm({ initialApplication, resubmission = false
         <legend className="text-sm font-semibold text-foreground">Technologies <span className="font-normal text-muted-foreground">(Select all that apply)</span></legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {technologyOptions.map((option) => (
-            <div key={option} className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
+            <label key={option} className="flex cursor-pointer items-center justify-between gap-3 text-sm text-muted-foreground">
               <span>{option}</span>
-              <input type="checkbox" name="technologies" value={option} checked={selectedTechnologies.includes(option)} readOnly tabIndex={-1} aria-hidden="true" className="sr-only" />
-              <SquishSwitch {...switchProps} checked={selectedTechnologies.includes(option)} ariaLabel={`${option} technology`} onChange={(checked) => setSelectedTechnologies((current) => checked ? [...current, option] : current.filter((value) => value !== option))} />
-            </div>
+              <input
+                type="checkbox"
+                name="technologies"
+                value={option}
+                checked={selectedTechnologies.includes(option)}
+                onChange={(event) => setSelectedTechnologies((current) => event.target.checked ? [...current, option] : current.filter((value) => value !== option))}
+                className="h-5 w-5 shrink-0 cursor-pointer accent-primary"
+              />
+            </label>
           ))}
         </div>
       </fieldset>
@@ -153,10 +163,15 @@ export function SellerApplicationForm({ initialApplication, resubmission = false
       </div>
 
       {resubmission && (
-        <div className="flex items-center justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-foreground">
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-foreground">
+          <input
+            type="checkbox"
+            checked={confirmedResubmission}
+            onChange={(event) => setConfirmedResubmission(event.target.checked)}
+            className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-primary"
+          />
           <span>I confirm that these details are accurate and I want to resubmit this application for review.</span>
-          <SquishSwitch {...switchProps} checked={confirmedResubmission} ariaLabel="Confirm application resubmission" onChange={setConfirmedResubmission} />
-        </div>
+        </label>
       )}
 
       {error && (
